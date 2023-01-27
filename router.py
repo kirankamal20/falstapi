@@ -14,7 +14,7 @@ async def get_all():
 
 @router.post("/book/create")
 async def create(book: Book):
-    BookRepo.insert(book)
+    await BookRepo.insert(book)
     return Response(code=200, status="Ok", message="Success save data").dict(exclude_none=True)
 
 

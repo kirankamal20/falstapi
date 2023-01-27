@@ -21,7 +21,7 @@ class BookRepo():
             "title": book.title,
             "description": book.description,
         }
-        database.get_collection('book').insert_one(_book)
+        await database.get_collection('book').insert_one(_book)
 
     @staticmethod
     async def update(id: str, book: Book):
