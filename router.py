@@ -1,11 +1,23 @@
 from fastapi import APIRouter
-
+from fastapi import HTTPException
 from model import Book, Response
 from repositroy import BookRepo
 
 router = APIRouter()
 
 
+ 
+
+@router.post("/login")
+async def login(username, password):
+    if username == "kiran" and password == "Kiran@123":
+        return HTTPException(status_code=200, detail="Successfully logged")
+    else:
+        # Returning HTTPException with status code 401 (Unauthorized)
+        raise HTTPException(status_code=401, detail="Username or Password Incorrect")
+
+ 
+     
 @router.get("/book/")
 async def get_all():
     _bookList = await BookRepo.retrieve()
