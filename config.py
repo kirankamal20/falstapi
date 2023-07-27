@@ -17,6 +17,7 @@ import pymongo
 
 
 client = pymongo.MongoClient("mongodb+srv://Kiran123:Kiran123@cluster0.tqocdec.mongodb.net/?retryWrites=true&w=majority")
+ 
 database = client["test"]
 # # print results
 # for i in result:
