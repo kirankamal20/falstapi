@@ -1,17 +1,21 @@
+from typing import Annotated
 from fastapi import APIRouter
-from fastapi import HTTPException
+from fastapi import HTTPException, Form
+from pydantic import BaseModel
 from model import Book, Response
 from repositroy import BookRepo
 
 router = APIRouter()
 
 
- 
+class Login(BaseModel):
+    username: str
+    password: str
 
 @router.post("/login")
-async def login(username, password):
-    if username == "kiran" and password == "Kiran@123":
-        return HTTPException(status_code=200, detail="Successfully logged")
+async def login(request: Login ):
+    if request.username == "kiran" and request. password == "Kiran@123":
+        raise HTTPException(status_code=200, detail="Successfully logged")
     else:
         # Returning HTTPException with status code 401 (Unauthorized)
         raise HTTPException(status_code=401, detail="Username or Password Incorrect")
