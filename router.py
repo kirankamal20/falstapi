@@ -17,20 +17,6 @@ class Book(BaseModel):
     title: str
     author: str
 # Sample student data
-students = [
-    {
-        "name": "John Doe",
-        "age": 20,
-        "image": "https://example.com/images/john.jpg"
-    },
-    {
-        "name": "Jane Smith",
-        "age": 21,
-        "image": "https://example.com/images/jane.jpg"
-    },
-    # Add more student entries as needed
-]
-
 books = []
 @router.post("/login")
 async def login(request: Login ):
@@ -41,9 +27,12 @@ async def login(request: Login ):
 # Create a book
 @router.post("/books/" )
 async def create_book(book: Book):
-    book_dict = book.dict()
-    books.append(book_dict)
-    return book_dict
+    try:
+        book_dict = book.dict()
+        books.append(book_dict)
+        return {"message": "Book created successfully", "data": book_dict}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Read all books
 @router.get("/books/")
