@@ -30,14 +30,14 @@ async def create_book(book: Book):
     try:
         book_dict = book.dict()
         books.append(book_dict)
-        return {"message": "Book created successfully", "data": book_dict}
+        return HTTPException(status_code=200, detail="Book Successfully added") 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 # Read all books
 @router.get("/books/")
 async def read_books():
-    return books
+    return list(reversed(books))
 
 # Read a book by ID
 @router.get("/books/{book_id}" )
