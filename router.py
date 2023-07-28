@@ -61,7 +61,8 @@ async def update_book(book_id: int, book: Book):
 async def delete_book(book_id: int):
     for idx, stored_book in enumerate(books):
         if stored_book["id"] == book_id:
-            return books.pop(idx)
+            books.pop(idx)
+            return  {"message" :"Successfully deleted " }
     raise HTTPException(status_code=404, detail="Book not found")   
 # @router.get("/book/")
 # async def get_all():
