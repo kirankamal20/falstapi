@@ -4,3 +4,4 @@ motor
 pymongo
 requests
 Jinja2
+python-multipart
