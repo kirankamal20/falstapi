@@ -1,12 +1,16 @@
-from fastapi import APIRouter
+from secrets import token_hex
+from click import File
+from fastapi import APIRouter, UploadFile
 from fastapi import HTTPException, Form
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 from model import Book, Response
 from repositroy import BookRepo
-
+import os
+from fastapi import File, UploadFile, FastAPI
 router = APIRouter()
-
+import os
+from fastapi import UploadFile
 
 class Login(BaseModel):
     username: str
@@ -64,31 +68,27 @@ async def delete_book(book_id: int):
             books.pop(idx)
             return  {"message" :"Successfully deleted " }
     raise HTTPException(status_code=404, detail="Book not found")   
-# @router.get("/book/")
-# async def get_all():
-#     _bookList = await BookRepo.retrieve()
-#     return Response(code=200, status="Ok", message="Success retrieve all data", result=_bookList).dict(exclude_none=True)
+ 
+@router.post("/upload-image")
+async def create_upload_file(file: UploadFile):
+    file_name = os.path.basename(file.filename)
+    file_path = f"images/{file_name}"
+    
+    # Create the 'images' directory if it doesn't exist
+    os.makedirs("images", exist_ok=True)
+
+    with open(file_path, "wb") as f:
+        contents = await file.read()  # Read the contents of the file
+        f.write(contents)  # Write the contents to the file
+
+    return {"message": f"File {file_name} uploaded successfully."}
+
+@router.get("/download-image/{file_name}")
+async def download_file(file_name: str):
+    file_path = f"images/{file_name}"
+    return FileResponse(file_path)
+ 
 
 
-# @router.post("/book/create")
-# async def create(book: Book):
-#     await BookRepo.insert(book)
-#     return Response(code=200, status="Ok", message="Success save data").dict(exclude_none=True)
 
 
-# @router.get("/book/{id}")
-# async def get_id(id: str):
-#     _book =  BookRepo.retrieve_id(id)
-#     return Response(code=200, status="Ok", message="Success retrieve data", result=_book).dict(exclude_none=True)
-
-
-# @router.post("/book/update")
-# async def update(book: Book):
-#     BookRepo.update(book.id,book)
-#     return Response(code=200, status="Ok", message="Success update data").dict(exclude_none=True)
-
-
-# @router.delete("/book/{id}")
-# async def delete(id: str):
-#     BookRepo.delete(id)
-#     return Response(code=200, status="Ok", message="Success delete data").dict(exclude_none=True)
